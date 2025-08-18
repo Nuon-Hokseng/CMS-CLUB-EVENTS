@@ -4,6 +4,9 @@ import SectionOne from "@/components/section-one";
 import SectionTwo from "@/components/section-two";
 import SectionThree from "@/components/section-three";
 import SectionFour from "@/components/section-four";
+import SectionFive from "@/components/section-five";
+import CustomerReview from "@/components/custom-review";
+import Footer from "@/components/footer";
 export default function Home() {
   const feature = [
   { name: "Pro Shop", image: "/shop.png", description: 'Find the latest golf gear and expert advice, all in one convenient stop.' },
@@ -20,6 +23,9 @@ export default function Home() {
       <SectionTwo />
       <SectionThree />
       <SectionFour/>
+      <SectionFive/>
+      <CustomerReview/>
+      <Footer/>
     </div>
   );
 }
