@@ -16,11 +16,6 @@ This project provides a clean UI, easy-to-use admin panel, and flexible structur
 
 ---
 
-## 📂 Project Structure
-
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
