@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import Logo from "../main-logo";
-import Button from "../button";
+import Logo from "../ui/main-logo";
+import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
 export default function UserLogin() {
   const router = useRouter();
@@ -78,7 +78,10 @@ export default function UserLogin() {
 
               <p className="text-sm md:text-base">
                 Don't have one?{" "}
-                <button className="text-green-600 hover:text-green-700 font-medium underline transition-colors duration-200" onClick={() => router.push("/signup")}>
+                <button
+                  className="text-green-600 hover:text-green-700 font-medium underline transition-colors duration-200"
+                  onClick={() => router.push("/signup")}
+                >
                   Sign up
                 </button>
               </p>

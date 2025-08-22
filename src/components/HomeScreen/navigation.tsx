@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Clock, MapPin, Mail, Menu, X } from "lucide-react";
-import Button from "@/components/button";
+import Button from "@/components/ui/main-button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 export default function Navigation() {
@@ -142,7 +142,6 @@ export default function Navigation() {
                 </a>
                 <button onClick={() => router.push("/aboutus")}>
                   <a
-                    href="#"
                     className={`rounded-full transform hover:scale-105 transition-all duration-300 px-5 py-3 font-medium ${
                       isScrolled
                         ? "text-gray-700 hover:bg-green-100 hover:text-green-700"

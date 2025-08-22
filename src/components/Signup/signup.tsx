@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import Logo from "../main-logo";
-import Button from "../button";
+import Logo from "../ui/main-logo";
+import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
 export default function UserLogin() {
   const router = useRouter();

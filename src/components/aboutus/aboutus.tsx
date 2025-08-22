@@ -8,7 +8,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="relative bg-green-700 text-white py-16 px-6 text-center">
+      <section className="relative bg-green-600 text-white py-16 px-6 text-center min-h-scree">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           About CMS Golf Club
         </h1>
@@ -19,12 +19,12 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-12 px-6 md:px-12">
+      <section className="py-12 px-6 md:px-12 text-gray-600">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
           <Image
             width={2000}
             height={1000}
-            src="/splash.png"
+            src="/aboutus.jpg"
             alt="logo"
             className="rounded-2xl shadow-lg object-cover"
           />
@@ -43,7 +43,7 @@ export default function AboutPage() {
       </section>
 
       {/* Trainers Section */}
-      <section className="bg-white py-12 px-6 md:px-12">
+      <section className="bg-white py-12 px-6 md:px-12 ">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10">
             Meet Our Trainers
@@ -54,7 +54,7 @@ export default function AboutPage() {
               <Image
                 width={500}
                 height={500}
-                src="/trainer3.png"
+                src="/trainer.jpg"
                 alt="Alexander Müller"
                 className="rounded-xl mb-4 object-cover"
               />
@@ -86,7 +86,7 @@ export default function AboutPage() {
             {/* Trainer 3 */}
             <div className="bg-gray-100 p-6 rounded-2xl shadow hover:shadow-lg transition">
               <Image
-                width={1000}
+                width={2500}
                 height={1000}
                 src="/trainer1.png"
                 alt="Dara Soth"
@@ -105,7 +105,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section className="bg-green-700 text-white py-12 px-6 text-center">
         <h2 className="text-2xl md:text-3xl font-semibold mb-4">
           Get in Touch
@@ -115,23 +114,12 @@ export default function AboutPage() {
           friendly team today!
         </p>
 
-        {/* ✅ Option 1: Scroll to footer on homepage */}
         <button
           onClick={() => router.push("/#footer")}
           className="inline-block bg-white text-green-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-gray-100 transition"
         >
           Contact Us
         </button>
-
-        {/* ✅ Option 2: Dedicated Contact Page (uncomment if you want) */}
-        {/*
-        <Link
-          href="/contact"
-          className="inline-block bg-white text-green-700 font-semibold px-6 py-3 rounded-full shadow hover:bg-gray-100 transition"
-        >
-          Contact Us
-        </Link>
-        */}
       </section>
     </main>
   );

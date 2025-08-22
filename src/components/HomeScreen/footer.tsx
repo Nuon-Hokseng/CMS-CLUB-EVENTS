@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SocialLinks from "../social";
+import SocialLinks from "../ui/social";
 
 export default function Footer() {
   return (
@@ -48,7 +48,7 @@ export default function Footer() {
           </div>
           <div className="text-gray-500 hover:text-green-500 transition-colors duration-200 cursor-pointer">
             <p className="text-sm md:text-base">
-              Golfer's Wish List: How To Fix A Slice
+              Golfer&apos;s Wish List: How To Fix A Slice
             </p>
           </div>
         </div>

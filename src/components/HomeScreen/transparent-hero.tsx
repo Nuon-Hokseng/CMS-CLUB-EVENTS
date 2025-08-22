@@ -1,12 +1,21 @@
-import Image from "next/image"
-import Button from "@/components/button"
-
+"use client";
+import Image from "next/image";
+import Button from "@/components/ui/main-button";
+import { useRouter } from "next/navigation";
 export default function TransparentHero() {
+  const router = useRouter();
   return (
+    
     <div className="relative h-screen w-full overflow-hidden">
       {/* Background Image with Transparency */}
       <div className="absolute inset-0">
-        <Image src="/splash.png" alt="Hero Background" fill className="object-cover opacity-90" priority />
+        <Image
+          src="/splash.png"
+          alt="Hero Background"
+          fill
+          className="object-cover opacity-90"
+          priority
+        />
       </div>
 
       {/* Gradient Overlay for better text readability */}
@@ -21,9 +30,9 @@ export default function TransparentHero() {
           <p className="text-base md:text-lg lg:text-xl text-white/90 drop-shadow-md max-w-xs md:max-w-lg lg:max-w-xl mb-5 mx-auto">
             Experience excellence through innovation and transparency
           </p>
-          <Button variant="green">Book now</Button>
+          <Button variant="green" onClick={() => router.push("/booking")}>Book now</Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
