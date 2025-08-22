@@ -26,7 +26,7 @@ This project provides a clean UI, easy-to-use admin panel, and flexible structur
 ### Installation
 ```bash
 # Clone repo
-git clone https://github.com/your-username/golf-club-cms.git
+git clone https://github.com/Nuon-Hokseng/CMS-CLUB-EVENTS.git
 
 # Go to project folder
 cd golf-club-cms
