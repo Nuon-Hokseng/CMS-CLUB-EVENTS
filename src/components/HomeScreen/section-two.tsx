@@ -60,7 +60,7 @@ export default function EventsSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-12 bg-green-50 overflow-hidden">
+    <section ref={sectionRef} className="py-12 bg-green-50 overflow-hidden" id="event" >
       {/* Section Title */}
       <div className="container mx-auto px-4 mb-10">
         <div

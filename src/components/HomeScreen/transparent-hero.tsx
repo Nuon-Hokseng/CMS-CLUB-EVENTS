@@ -6,7 +6,7 @@ export default function TransparentHero() {
     <div className="relative h-screen w-full overflow-hidden">
       {/* Background Image with Transparency */}
       <div className="absolute inset-0">
-        <Image src="/splash.png" alt="Hero Background" fill className="object-cover opacity-80" priority />
+        <Image src="/splash.png" alt="Hero Background" fill className="object-cover opacity-90" priority />
       </div>
 
       {/* Gradient Overlay for better text readability */}
@@ -21,7 +21,7 @@ export default function TransparentHero() {
           <p className="text-base md:text-lg lg:text-xl text-white/90 drop-shadow-md max-w-xs md:max-w-lg lg:max-w-xl mb-5 mx-auto">
             Experience excellence through innovation and transparency
           </p>
-          <Button variant="blue">Check our events</Button>
+          <Button variant="green">Book now</Button>
         </div>
       </div>
     </div>

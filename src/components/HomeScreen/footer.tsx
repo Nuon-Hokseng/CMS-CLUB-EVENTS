@@ -3,7 +3,7 @@ import SocialLinks from "../social";
 
 export default function Footer() {
   return (
-    <section className="bg-green-50">
+    <section className="bg-green-50" id="footer">
       <div className="px-4 md:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {/* Logo and Description Column */}
         <div className="py-8 px-4 md:p-6 lg:p-8 flex flex-col items-center gap-4 border-t border-green-600 lg:border-l ">

@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-export default function TransparentHero() {
+export default function logo() {
   return (
     <div>
          <Image

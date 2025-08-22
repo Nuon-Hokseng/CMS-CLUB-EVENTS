@@ -1,15 +1,15 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Clock, MapPin, Mail, Menu, X } from "lucide-react";
 import Button from "@/components/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 export default function Navigation() {
+  const router = useRouter();
   const [currentTime, setCurrentTime] = useState("");
   const [currentLocation] = useState("Traeng Trayeung, Kirirom");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -100,21 +100,16 @@ export default function Navigation() {
           isScrolled ? "bg-white/95 shadow-lg" : "bg-black/20"
         }`}
       >
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <div className="flex items-center justify-between h-16 md:h-15">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Image
-                src={"/logo.png"}
-                alt="logo"
-                width={70}
-                height={80}
-              />
+              <Image src={"/logo.png"} alt="logo" width={70} height={80} />
             </div>
 
             {/* Desktop Navigation - Hidden on mobile */}
             <div className="hidden md:flex flex-1 justify-center">
-              <div className="flex items-center space-x-8">
+              <div className="flex items-center space-x-10">
                 <a
                   href="#"
                   className={`rounded-full transform hover:scale-105 transition-all duration-300 px-5 py-3 font-medium ${
@@ -126,7 +121,7 @@ export default function Navigation() {
                   Home
                 </a>
                 <a
-                  href="#"
+                  href="#event"
                   className={`rounded-full transform hover:scale-105 transition-all duration-300 px-5 py-3 font-medium ${
                     isScrolled
                       ? "text-gray-700 hover:bg-green-100 hover:text-green-700"
@@ -136,7 +131,7 @@ export default function Navigation() {
                   Events
                 </a>
                 <a
-                  href="#"
+                  href="#member"
                   className={`rounded-full transform hover:scale-105 transition-all duration-300 px-5 py-3 font-medium ${
                     isScrolled
                       ? "text-gray-700 hover:bg-green-100 hover:text-green-700"
@@ -145,31 +140,30 @@ export default function Navigation() {
                 >
                   Membership
                 </a>
-                <a
-                  href="#"
-                  className={`rounded-full transform hover:scale-105 transition-all duration-300 px-5 py-3 font-medium ${
-                    isScrolled
-                      ? "text-gray-700 hover:bg-green-100 hover:text-green-700"
-                      : "text-white hover:bg-green-700"
-                  }`}
-                >
-                  About us
-                </a>
+                <button onClick={() => router.push("/aboutus")}>
+                  <a
+                    href="#"
+                    className={`rounded-full transform hover:scale-105 transition-all duration-300 px-5 py-3 font-medium ${
+                      isScrolled
+                        ? "text-gray-700 hover:bg-green-100 hover:text-green-700"
+                        : "text-white hover:bg-green-700"
+                    }`}
+                  >
+                    About us
+                  </a>
+                </button>
               </div>
             </div>
 
             {/* Desktop Right side actions - Hidden on mobile */}
             <div className="hidden md:flex items-center space-x-4 gap-8">
-              <div
-                className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${
-                  isScrolled
-                    ? "bg-green-100 text-green-700"
-                    : "bg-white/20 text-white backdrop-blur-sm"
-                }`}
+              <Button
+                className=" bg-green-600 text-white rounded-2xl hover:bg-green-700 transform hover:scale-101 transition-all duration-300 shadow-md hover:shadow-lg w-20 h-10 "
+                variant="green"
+                onClick={() => router.push("/login")}
               >
-                <p>Interested?</p>
-              </div>
-              <Button variant="blue">Book now</Button>
+                Log in
+              </Button>
             </div>
 
             {/* Mobile Menu Button - Only visible on mobile */}
@@ -232,7 +226,7 @@ export default function Navigation() {
                   Home
                 </a>
                 <a
-                  href="#"
+                  href="#event"
                   className={`block rounded-lg px-4 py-3 font-medium transition-all duration-300 ${
                     isScrolled
                       ? "text-gray-700 hover:bg-green-100 hover:text-green-700"
@@ -243,7 +237,7 @@ export default function Navigation() {
                   Events
                 </a>
                 <a
-                  href="#"
+                  href="#member"
                   className={`block rounded-lg px-4 py-3 font-medium transition-all duration-300 ${
                     isScrolled
                       ? "text-gray-700 hover:bg-green-100 hover:text-green-700"
@@ -255,7 +249,7 @@ export default function Navigation() {
                 </a>
                 <a
                   href="#"
-                  className={`block rounded-lg px-4 py-3 font-medium transition-all duration-300 ${
+                  className={` block rounded-lg px-4 py-3 font-medium transition-all duration-300 ${
                     isScrolled
                       ? "text-gray-700 hover:bg-green-100 hover:text-green-700"
                       : "text-white hover:bg-green-700"
@@ -277,7 +271,9 @@ export default function Navigation() {
                 >
                   <p>Interested?</p>
                 </div>
-                <Button variant="blue">Order Now!</Button>
+                <Button variant="green" onClick={() => router.push("/login")}>
+                  Login
+                </Button>
               </div>
             </div>
           </div>

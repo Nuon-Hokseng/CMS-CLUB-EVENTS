@@ -1,4 +1,7 @@
 @import "tailwindcss";
+html {
+  scroll-behavior: smooth;
+}
 
 :root {
   --background: #F0FFF4;
@@ -14,7 +17,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #22543D;
+    --background: #F0FFF4;
     --foreground: #F0FFF4;
   }
 }
