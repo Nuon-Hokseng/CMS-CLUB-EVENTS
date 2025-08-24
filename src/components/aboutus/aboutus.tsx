@@ -43,7 +43,7 @@ export default function AboutPage() {
       </section>
 
       {/* Trainers Section */}
-      <section className="bg-white py-12 px-6 md:px-12 ">
+      <section className="bg-white py-12 px-6 md:px-12 " id="trainer">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-semibold text-center mb-10">
             Meet Our Trainers
@@ -54,7 +54,7 @@ export default function AboutPage() {
               <Image
                 width={500}
                 height={500}
-                src="/trainer.jpg"
+                src="/trainer3.png"
                 alt="Alexander Müller"
                 className="rounded-xl mb-4 object-cover"
               />

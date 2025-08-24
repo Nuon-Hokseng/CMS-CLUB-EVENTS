@@ -47,7 +47,7 @@ export default function CustomerReview() {
           </div>
         </form>
         <div className="mt-2">
-          <Button variant="blue">Send</Button>
+          <Button variant="green">Send</Button>
         </div>
       </div>
     </section>
