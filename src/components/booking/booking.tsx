@@ -37,11 +37,6 @@ export default function Booking() {
     { id: 3, name: "Alice", time: "1:00 PM to 3:00 PM" },
     { id: 4, name: "Alex", time: "10:00 AM to 12:00 PM" },
   ];
-  const handleTrainerBooking = (name: string, time: string) => {
-    setBookedTrainer({ name, time });
-    setIsThankYouTrainer(true);
-    console.log(`Booked trainer ${name} at ${time}`);
-  };
 
   const timeSlots = [
     "8:00 AM - 10:00 AM",

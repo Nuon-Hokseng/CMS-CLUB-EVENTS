@@ -18,7 +18,7 @@ export default function CustomerReview() {
           Contact us
         </h1>
         <p className="font-light text-gray-300 text-sm md:text-base">
-          Please fill out the form and we'll get back to you
+          Please fill out the form and we&apos;ll get back to you
         </p>
 
         <form className="flex flex-col gap-4 md:gap-5">

@@ -16,11 +16,11 @@ export default function SectionFourReview() {
           </div>
 
           <div className="flex flex-col justify-center text-center px-2 md:px-4 lg:mt-40 lg:px-6 text-sm md:text-base lg:text-2xl text-gray-600 leading-relaxed">
-            "An exceptional golf experience from start to finish! The course is beautifully maintained, offering a
+            &quot;An exceptional golf experience from start to finish! The course is beautifully maintained, offering a
             perfect balance of challenge and enjoyment for all skill levels. The club&apos;s staff is incredibly
             welcoming and professional, making every visit feel special. Whether you&apos;re here for a quick round, a
             weekend tournament, or to relax at one of the club events, this place truly stands out. A hidden gem for
-            golf lovers!"
+            golf lovers!&quot;
           </div>
         </div>
 

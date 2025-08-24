@@ -77,7 +77,7 @@ export default function UserLogin() {
               <Button variant="green">Sign in</Button>
 
               <p className="text-sm md:text-base">
-                Don't have one?{" "}
+                Don&apos;t have one?{" "}
                 <button
                   className="text-green-600 hover:text-green-700 font-medium underline transition-colors duration-200"
                   onClick={() => router.push("/signup")}
