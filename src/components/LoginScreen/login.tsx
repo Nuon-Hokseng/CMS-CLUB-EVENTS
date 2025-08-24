@@ -9,7 +9,7 @@ export default function UserLogin() {
     <section className="w-screen min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         {/* Left Side - Hero Image - Hidden on mobile */}
-        <div className="hidden lg:block bg-green-200 relative w-full h-full p-10 flex justify-center items-center">
+        <div className="hidden lg:block bg-green-200 relative w-full h-full p-10 justify-center items-center">
           <Image
             src="/login logo.png"
             alt="splash login logo"
