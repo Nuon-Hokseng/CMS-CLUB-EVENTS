@@ -5,6 +5,7 @@ import Logo from "../ui/main-logo";
 import { Calendar } from "../ui/calendar";
 import { Clock } from "lucide-react";
 import Button from "../ui/main-button";
+
 export default function Booking() {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
@@ -24,12 +25,13 @@ export default function Booking() {
   React.useEffect(() => {
     setDate(new Date());
   }, []);
+
   const handleBookNow = () => {
     if (!date || !selectedTime) return;
-
     console.log("Booking confirmed:", date.toDateString(), selectedTime);
     setIsThankYou(true);
   };
+
   const sessions = [
     { id: 1, name: "Nick", time: "8:00 AM to 10:00 AM" },
     { id: 2, name: "Mind", time: "10:00 AM to 12:00 PM" },
@@ -54,10 +56,12 @@ export default function Booking() {
     console.log("Selected date: ", newDate);
     if (newDate) setIsOpen(true);
   };
+
   return (
-    <main className="bg-green-50">
+    <main className="bg-green-50 min-h-screen flex flex-col">
+      {/* Header */}
       <section id="header">
-        <div className=" w-full h-35 p-10 flex items-center gap-5 text-3xl font-light border-b-2 border-green-600 ">
+        <div className="w-full py-6 px-4 flex items-center gap-4 text-xl md:text-2xl lg:text-3xl font-light border-b-2 border-green-600">
           <Link href="/">
             <Logo />
           </Link>
@@ -65,174 +69,193 @@ export default function Booking() {
         </div>
       </section>
 
-      <section id="main_part" className="flex h-195">
-        <div className="w-full flex gap-x-4 justify-center items-center">
+      {/* Main content (calendar + sessions) */}
+      <section
+        id="main_part"
+        className="flex flex-col lg:flex-row flex-1 lg:h-[calc(100vh-80px)]"
+      >
+        {/* Calendar Section */}
+        <div className="w-full flex justify-center items-center py-6">
           <Calendar
             showOutsideDays
             mode="single"
             selected={date}
             onSelect={handleSelect}
-            className="rounded-lg border w-150 text-green-600 "
+            className="rounded-lg border w-[90%] max-w-md text-green-600"
           />
         </div>
 
-        {isOpen && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-xl flex flex-col p-3 w-300 h-180 text-center justify-center items-center border-4 border-green-300">
-              <h2 className="text-3xl font-semibold text-green-700 mb-4">
-                Confirm Date
-              </h2>
-              <div className="text-gray-700 mb-6 flex flex-col">
-                <p className="text-green-600">Selected Date</p>
-                <br />
-                <div className="text-xl font-bold">{date?.toDateString()}</div>
-              </div>
-              <div className="w-100 h-fit justify-center items-center p-10 grid grid-cols-1 gap-3">
-                {timeSlots.map((time) => (
-                  <Button
-                    key={time}
-                    variant="green"
-                    className={`bg-green-600 text-white rounded-2xl transform hover:scale-101 transition-all duration-300 shadow-md hover:shadow-lg w-full h-12 ${
-                      selectedTime === time ? "bg-green-800" : ""
-                    }`}
-                    onClick={() => handleSelectTime(time)}
-                  >
-                    {time}
-                  </Button>
-                ))}
-              </div>
-              <button
-                onClick={handleBookNow}
-                className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 "
-              >
-                Book Now
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-5 w-27"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-
-        {isThankYou && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-xl p-6 w-[400px] h-[250px] flex flex-col items-center justify-center text-center">
-              <h2 className="text-xl font-semibold text-green-700 mb-4">
-                Thank You!
-              </h2>
-              <p className="text-gray-700">
-                Your booking for{" "}
-                <span className="text-red-400">{date?.toDateString()}</span> at{" "}
-                <span className="text-red-400">{selectedTime}</span> is
-                confirmed.
-              </p>
-              <button
-                onClick={() => setIsThankYou(false)}
-                className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-5 w-27"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-
-        {isThankYouTrainer && bookedTrainer && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-xl p-6 w-[400px] h-[250px] flex flex-col items-center justify-center text-center">
-              <h2 className="text-xl font-semibold text-green-700 mb-4">
-                Thank You!
-              </h2>
-              <p className="text-gray-700">
-                Your booking for{" "}
-                <span className="text-red-400">{bookedTrainer.name}</span> at{" "}
-                <span className="text-red-400">{bookedTrainer.time}</span> is
-                confirmed.
-              </p>
-              <button
-                onClick={() => setIsThankYouTrainer(false)}
-                className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-5 w-27"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-
-        {showConfirm && trainerToBook && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-xl p-6 w-[350px] h-[200px] flex flex-col items-center justify-center text-center">
-              <h2 className="text-lg font-semibold text-green-700 mb-4">
-                Are you sure?
-              </h2>
-              <p className="text-gray-700 mb-6">
-                You are about to book{" "}
-                <span className="text-red-400">{trainerToBook.name}</span> at{" "}
-                <span className="text-red-400">{trainerToBook.time}</span>.
-              </p>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => {
-                    setBookedTrainer(trainerToBook);
-                    setIsThankYouTrainer(true);
-                    setShowConfirm(false);
-                    console.log(
-                      `Booked trainer ${trainerToBook.name} at ${trainerToBook.time}`
-                    );
-                  }}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-                >
-                  Yes
-                </button>
-                <button
-                  onClick={() => setShowConfirm(false)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                >
-                  No
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        <section className="w-full flex justify-center items-center">
-          <div className="w-190 h-160  p-10 grid text-gray-600 rounded-3xl border-2 border-green-500">
-            <p className="font-light text-2xl text-green-600">
+        {/* Upcoming Events */}
+        <section className="w-full flex justify-center items-center px-4 pb-8 lg:pb-0">
+          <div className="w-full max-w-sm lg:max-w-2xl p-4 md:p-6 lg:p-10 grid text-gray-600 rounded-3xl">
+            <p className="font-light text-lg md:text-xl lg:text-2xl text-green-600 mb-4">
               Upcoming Events
             </p>
             {sessions.map((session) => (
-              <>
-                <div key={session.name} className=" w-full h-30 p-3">
-                  <p>Session with {session.name}</p>
-                  <p className="flex items-center text-sm gap-2">
-                    <Clock className="w-4 h-4 text-green-600" />
-                    {session.time}
+              <div
+                key={session.id}
+                className="w-full mb-6 p-3 border-b last:border-none"
+              >
+                <p className="text-base md:text-lg">
+                  Session with {session.name}
+                </p>
+                <p className="flex items-center text-sm md:text-base gap-2 mt-1">
+                  <Clock className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
+                  {session.time}
+                </p>
+                <Button
+                  variant="green"
+                  className="text-sm md:text-base mt-3"
+                  onClick={() => {
+                    setTrainerToBook({
+                      name: session.name,
+                      time: session.time,
+                    });
+                    setShowConfirm(true);
+                  }}
+                >
+                  Book
+                </Button>
+                <div className="flex">
+                  <p className="ml-auto text-sm md:text-base hover:text-green-500 transition-colors duration-200 cursor-pointer">
+                    <a href="/aboutus#trainer">Details</a>
                   </p>
-                  <Button
-                    variant="green"
-                    className="text-sm mt-3"
-                    onClick={() => {
-                      setTrainerToBook({
-                        name: session.name,
-                        time: session.time,
-                      });
-                      setShowConfirm(true);
-                    }}
-                  >
-                    Book
-                  </Button>
-                  <div className="flex">
-                    <p className="flex items-start ml-auto hover:text-green-500 transition-colors duration-200 cursor-pointer">
-                      <a href="/aboutus#trainer">Details</a>
-                    </p>
-                  </div>
                 </div>
-              </>
+              </div>
             ))}
           </div>
         </section>
       </section>
+
+      {/* Date & Time Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl flex flex-col p-6 w-[90%] max-w-lg max-h-[90vh] overflow-y-auto text-center items-center border-4 border-green-300">
+            <h2 className="text-2xl font-semibold text-green-700 mb-4">
+              Confirm Date
+            </h2>
+            <p className="text-gray-700 mb-6">
+              <span className="text-green-600">Selected Date:</span>{" "}
+              <span className="font-bold">{date?.toDateString()}</span>
+            </p>
+
+            <div className="w-full grid grid-cols-1 gap-3 mb-6">
+              {timeSlots.map((time) => (
+                <Button
+                  key={time}
+                  variant="green"
+                  className={`bg-green-600 text-white rounded-2xl transition-all duration-300 w-full h-12 ${
+                    selectedTime === time ? "bg-green-800" : ""
+                  }`}
+                  onClick={() => handleSelectTime(time)}
+                >
+                  {time}
+                </Button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                handleBookNow();
+              }}
+              className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 w-full"
+            >
+              Book Now
+            </button>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+              }}
+              className="px-4 py-2 rounded-lg bg-gray-300 text-gray-700 hover:bg-gray-400 mt-4 w-full"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Thank You Modal */}
+      {isThankYou && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
+            <h2 className="text-xl md:text-2xl font-semibold text-green-700 mb-4">
+              Thank You!
+            </h2>
+            <p className="text-gray-700 text-sm md:text-base">
+              Your booking for{" "}
+              <span className="text-red-400">{date?.toDateString()}</span> at{" "}
+              <span className="text-red-400">{selectedTime}</span> is confirmed.
+            </p>
+            <button
+              onClick={() => setIsThankYou(false)}
+              className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-5 w-full"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Trainer Modal */}
+      {showConfirm && trainerToBook && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
+            <h2 className="text-lg md:text-xl font-semibold text-green-700 mb-4">
+              Are you sure?
+            </h2>
+            <p className="text-gray-700 mb-6 text-sm md:text-base">
+              You are about to book{" "}
+              <span className="text-red-400">{trainerToBook.name}</span> at{" "}
+              <span className="text-red-400">{trainerToBook.time}</span>.
+            </p>
+            <div className="flex gap-4 w-full">
+              <button
+                onClick={() => {
+                  setBookedTrainer(trainerToBook);
+                  setIsThankYouTrainer(true);
+                  setShowConfirm(false);
+                  console.log(
+                    `Booked trainer ${trainerToBook.name} at ${trainerToBook.time}`
+                  );
+                }}
+                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Thank You Trainer Modal */}
+      {isThankYouTrainer && bookedTrainer && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
+            <h2 className="text-xl md:text-2xl font-semibold text-green-700 mb-4">
+              Thank You!
+            </h2>
+            <p className="text-gray-700 text-sm md:text-base">
+              Your booking for{" "}
+              <span className="text-red-400">{bookedTrainer.name}</span> at{" "}
+              <span className="text-red-400">{bookedTrainer.time}</span> is
+              confirmed.
+            </p>
+            <button
+              onClick={() => setIsThankYouTrainer(false)}
+              className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-5 w-full"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

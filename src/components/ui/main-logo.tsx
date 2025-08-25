@@ -4,7 +4,7 @@ export default function logo() {
   return (
     <div>
          <Image
-                src="/logo.png" // path from public/
+                src="/logo.png"
                 alt="My Logo"
                 width={100}
                 height={120}

@@ -2,14 +2,14 @@
 import { Mail, Facebook, Instagram, Linkedin } from "lucide-react";
 
 type Props = {
-  size?: number;               // icon size in px (default 16)
-  gap?: string;                // tailwind gap class (default gap-2)
-  className?: string;          // extra classes for the wrapper
+  size?: number;            
+  gap?: string;              
+  className?: string;          
   links?: {
-    email?: string;            // e.g., "mailto:you@example.com"
-    facebook?: string;         // e.g., "https://facebook.com/yourpage"
-    instagram?: string;        // e.g., "https://instagram.com/yourhandle"
-    linkedin?: string;         // e.g., "https://linkedin.com/in/yourprofile"
+    email?: string;            
+    facebook?: string;         
+    instagram?: string;        
+    linkedin?: string;        
   };
 };
 
