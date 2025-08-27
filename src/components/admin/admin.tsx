@@ -163,7 +163,7 @@ function GenericTable<T extends Record<string, string | number>>({
     <div className="overflow-x-auto text-lg">
       <div className="overflow-y-auto max-h-[60vh] border rounded-lg">
         <div
-          className={`grid grid-cols-${columns.length} bg-green-400 font-semibold text-center py-2 sticky top-0 z-10`}
+          className={`grid grid-cols-6 bg-green-400 font-semibold text-center py-2 sticky top-0 z-10`}
         >
           {columns.map((c) => (
             <div key={c}>{c}</div>
@@ -172,7 +172,7 @@ function GenericTable<T extends Record<string, string | number>>({
         {data.map((row, i) => (
           <div
             key={i}
-            className={`grid grid-cols-${columns.length} text-center border-t py-2 hover:bg-gray-100`}
+            className={`grid grid-cols-6 text-center border-t py-2 hover:bg-gray-100`}
           >
             {keys.map((k) => (
               <div key={String(k)}>{row[k]}</div>
