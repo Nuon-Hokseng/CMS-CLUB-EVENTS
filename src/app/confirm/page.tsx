@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function ConfirmEmailPage() {
+function ConfirmEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [message, setMessage] = useState("Verifying your email...");
@@ -45,5 +45,13 @@ export default function ConfirmEmailPage() {
     <div className="min-h-screen flex justify-center items-center">
       <p>{message}</p>
     </div>
+  );
+}
+
+export default function ConfirmEmailPage() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <ConfirmEmailContent />
+    </Suspense>
   );
 }
