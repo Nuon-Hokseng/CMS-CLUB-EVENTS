@@ -1,4 +1,4 @@
-import UserLogin from "@/components/LoginScreen/login";
+import UserLogin from "@/components/Signin/login";
 
 export default function login(){
     return(
