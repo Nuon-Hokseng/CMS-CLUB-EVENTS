@@ -1,7 +1,7 @@
 import { createClient } from "../../supabase/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function ConfirmEmailPage(
+export async function ConfirmEmailPage(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
