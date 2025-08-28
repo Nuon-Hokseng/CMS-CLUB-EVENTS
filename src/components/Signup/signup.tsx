@@ -4,7 +4,7 @@ import Image from "next/image";
 import Logo from "../ui/main-logo";
 import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
-import { signup } from "./signupServer";
+import { signup } from "../../app/api/signup/route";
 import { useState } from "react";
 
 export default function UserSignup() {

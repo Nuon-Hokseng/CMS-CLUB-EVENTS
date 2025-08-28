@@ -3,7 +3,7 @@ import Image from "next/image";
 import Logo from "../ui/main-logo";
 import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
-import { signin } from "./signinServer";
+import { signin } from "../../app/api/signin/route";
 import { useState } from "react";
 export default function UserLogin() {
   const [message, setMessage] = useState("");
@@ -16,8 +16,8 @@ export default function UserLogin() {
     if (result.success) {
       setMessage("Login successful! Redirecting...");
       setTimeout(() => {
-        router.push("/"); 
-      }, 3000); 
+        router.push("/");
+      }, 3000);
     } else {
       setMessage(`Error: ${result.message}`);
     }

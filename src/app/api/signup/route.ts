@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "../../supabase/server"; // adjust path if different
+import { createClient } from "../../../supabase/server"; // adjust path if different
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();
