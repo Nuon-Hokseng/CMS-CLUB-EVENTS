@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server"; // adjust path if different
+import { createClient } from "@/utils/supabase/server";
 
 export async function signupServer(formData: FormData) {
   const supabase = await createClient();
@@ -10,7 +10,7 @@ export async function signupServer(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  // Step 1: Create user in Supabase Auth
+  // Create user in Supabase Auth
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email,
     password,
@@ -20,7 +20,7 @@ export async function signupServer(formData: FormData) {
     return { success: false, message: authError.message };
   }
 
-  // Step 2: Insert into "profiles" table
+  //Insert into "profiles" table
   if (authData.user) {
     const { error: dbError } = await supabase.from("profiles").insert([
       {

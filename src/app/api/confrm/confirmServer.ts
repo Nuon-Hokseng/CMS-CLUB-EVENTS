@@ -4,7 +4,6 @@ export async function POST(req: Request) {
   const supabase = await createClient();
   const body = await req.json();
   const { token, email, firstName, lastName } = body;
-
   // 1) Verify token
   const { data: userData, error: verifyError } = await supabase.auth.verifyOtp({
     token,
