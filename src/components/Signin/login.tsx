@@ -3,7 +3,7 @@ import Image from "next/image";
 import Logo from "../ui/main-logo";
 import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
-import { signin } from "../../app/api/signin/route";
+import { signinServer } from "../../app/api/signin/signinServer";
 import { useState } from "react";
 export default function UserLogin() {
   const [message, setMessage] = useState("");
@@ -11,7 +11,7 @@ export default function UserLogin() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const result = await signin(formData);
+    const result = await signinServer(formData);
 
     if (result.success) {
       setMessage("Login successful! Redirecting...");

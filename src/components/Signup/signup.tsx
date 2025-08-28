@@ -4,7 +4,7 @@ import Image from "next/image";
 import Logo from "../ui/main-logo";
 import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
-import { signup } from "../../app/api/signup/route";
+import { signupServer } from "../../app/api/signup/signupServer";
 import { useState } from "react";
 
 export default function UserSignup() {
@@ -15,7 +15,7 @@ export default function UserSignup() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const result = await signup(formData);
+    const result = await signupServer(formData);
 
     if (result.success) {
       setMessage("Signup successful! Redirecting...");

@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server"; // adjust path if different
 
-export async function signup(formData: FormData) {
+export async function signupServer(formData: FormData) {
   const supabase = await createClient();
 
   const firstName = formData.get("firstName") as string;

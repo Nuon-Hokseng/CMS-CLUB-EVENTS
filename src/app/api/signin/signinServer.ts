@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function signin(formData: FormData) {
+export async function signinServer(formData: FormData) {
   const supabase = await createClient();
 
   const email = formData.get("email") as string;
