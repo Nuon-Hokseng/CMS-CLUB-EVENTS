@@ -61,7 +61,7 @@ export default function Booking() {
     <main className="bg-green-50 min-h-screen flex flex-col">
       {/* Header */}
       <section id="header">
-        <div className="w-full py-6 px-4 flex items-center gap-4 text-xl md:text-2xl lg:text-3xl font-light border-b-2 border-green-600">
+        <div className="w-full py-4 sm:py-6 px-4 flex items-center gap-3 sm:gap-4 text-lg sm:text-xl md:text-2xl lg:text-3xl font-light border-b-2 border-green-600">
           <Link href="/">
             <Logo />
           </Link>
@@ -69,43 +69,43 @@ export default function Booking() {
         </div>
       </section>
 
-      {/* Main content (calendar + sessions) */}
+      {/* Main content */}
       <section
         id="main_part"
         className="flex flex-col lg:flex-row flex-1 lg:h-[calc(100vh-80px)]"
       >
-        {/* Calendar Section */}
-        <div className="w-full flex justify-center items-center py-6">
+        {/* Calendar */}
+        <div className="w-full flex justify-center items-center py-4 sm:py-6">
           <Calendar
             showOutsideDays
             mode="single"
             selected={date}
             onSelect={handleSelect}
-            className="rounded-lg border w-[90%] max-w-md text-green-600"
+            className="rounded-lg border w-[95%] sm:w-[90%] md:max-w-md lg:max-w-lg text-green-600"
           />
         </div>
 
         {/* Upcoming Events */}
-        <section className="w-full flex justify-center items-center px-4 pb-8 lg:pb-0">
-          <div className="w-full max-w-sm lg:max-w-2xl p-4 md:p-6 lg:p-10 grid text-gray-600 rounded-3xl">
-            <p className="font-light text-lg md:text-xl lg:text-2xl text-green-600 mb-4">
+        <section className="w-full flex justify-center items-center px-3 sm:px-4 pb-6 lg:pb-0">
+          <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl p-4 sm:p-6 lg:p-10 grid text-gray-600 rounded-3xl">
+            <p className="font-light text-base sm:text-lg md:text-xl lg:text-2xl text-green-600 mb-4">
               Upcoming Events
             </p>
             {sessions.map((session) => (
               <div
                 key={session.id}
-                className="w-full mb-6 p-3 border-b last:border-none"
+                className="w-full mb-4 sm:mb-6 p-2 sm:p-3 border-b last:border-none"
               >
-                <p className="text-base md:text-lg">
+                <p className="text-sm sm:text-base md:text-lg">
                   Session with {session.name}
                 </p>
-                <p className="flex items-center text-sm md:text-base gap-2 mt-1">
-                  <Clock className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
+                <p className="flex items-center text-xs sm:text-sm md:text-base gap-2 mt-1">
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-green-600" />
                   {session.time}
                 </p>
                 <Button
                   variant="green"
-                  className="text-sm md:text-base mt-3"
+                  className="text-xs sm:text-sm md:text-base mt-2 sm:mt-3"
                   onClick={() => {
                     setTrainerToBook({
                       name: session.name,
@@ -117,7 +117,7 @@ export default function Booking() {
                   Book
                 </Button>
                 <div className="flex">
-                  <p className="ml-auto text-sm md:text-base hover:text-green-500 transition-colors duration-200 cursor-pointer">
+                  <p className="ml-auto text-xs sm:text-sm md:text-base hover:text-green-500 transition-colors duration-200 cursor-pointer">
                     <a href="/aboutus#trainer">Details</a>
                   </p>
                 </div>
@@ -130,21 +130,21 @@ export default function Booking() {
       {/* Date & Time Modal */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl flex flex-col p-6 w-[90%] max-w-lg max-h-[90vh] overflow-y-auto text-center items-center border-4 border-green-300">
-            <h2 className="text-2xl font-semibold text-green-700 mb-4">
+          <div className="bg-white rounded-xl shadow-xl flex flex-col p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-lg max-h-[90vh] overflow-y-auto text-center items-center border-4 border-green-300">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-green-700 mb-4">
               Confirm Date
             </h2>
-            <p className="text-gray-700 mb-6">
+            <p className="text-gray-700 mb-6 text-sm sm:text-base">
               <span className="text-green-600">Selected Date:</span>{" "}
               <span className="font-bold">{date?.toDateString()}</span>
             </p>
 
-            <div className="w-full grid grid-cols-1 gap-3 mb-6">
+            <div className="w-full grid grid-cols-1 gap-2 sm:gap-3 mb-6">
               {timeSlots.map((time) => (
                 <Button
                   key={time}
                   variant="green"
-                  className={`bg-green-600 text-white rounded-2xl transition-all duration-300 w-full h-12 ${
+                  className={`bg-green-600 text-white rounded-2xl transition-all duration-300 w-full h-10 sm:h-12 ${
                     selectedTime === time ? "bg-green-800" : ""
                   }`}
                   onClick={() => handleSelectTime(time)}
@@ -159,7 +159,7 @@ export default function Booking() {
                 setIsOpen(false);
                 handleBookNow();
               }}
-              className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 w-full"
+              className="px-3 sm:px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 w-full text-sm sm:text-base"
             >
               Book Now
             </button>
@@ -167,7 +167,7 @@ export default function Booking() {
               onClick={() => {
                 setIsOpen(false);
               }}
-              className="px-4 py-2 rounded-lg bg-gray-300 text-gray-700 hover:bg-gray-400 mt-4 w-full"
+              className="px-3 sm:px-4 py-2 rounded-lg bg-gray-300 text-gray-700 hover:bg-gray-400 mt-3 sm:mt-4 w-full text-sm sm:text-base"
             >
               Close
             </button>
@@ -178,18 +178,18 @@ export default function Booking() {
       {/* Thank You Modal */}
       {isThankYou && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
-            <h2 className="text-xl md:text-2xl font-semibold text-green-700 mb-4">
+          <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-green-700 mb-4">
               Thank You!
             </h2>
-            <p className="text-gray-700 text-sm md:text-base">
+            <p className="text-gray-700 text-xs sm:text-sm md:text-base">
               Your booking for{" "}
               <span className="text-red-400">{date?.toDateString()}</span> at{" "}
               <span className="text-red-400">{selectedTime}</span> is confirmed.
             </p>
             <button
               onClick={() => setIsThankYou(false)}
-              className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-5 w-full"
+              className="px-3 sm:px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-4 sm:mt-5 w-full text-sm sm:text-base"
             >
               Close
             </button>
@@ -200,16 +200,16 @@ export default function Booking() {
       {/* Confirm Trainer Modal */}
       {showConfirm && trainerToBook && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
-            <h2 className="text-lg md:text-xl font-semibold text-green-700 mb-4">
+          <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-green-700 mb-4">
               Are you sure?
             </h2>
-            <p className="text-gray-700 mb-6 text-sm md:text-base">
+            <p className="text-gray-700 mb-6 text-xs sm:text-sm md:text-base">
               You are about to book{" "}
               <span className="text-red-400">{trainerToBook.name}</span> at{" "}
               <span className="text-red-400">{trainerToBook.time}</span>.
             </p>
-            <div className="flex gap-4 w-full">
+            <div className="flex gap-3 sm:gap-4 w-full">
               <button
                 onClick={() => {
                   setBookedTrainer(trainerToBook);
@@ -219,13 +219,13 @@ export default function Booking() {
                     `Booked trainer ${trainerToBook.name} at ${trainerToBook.time}`
                   );
                 }}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                className="flex-1 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm sm:text-base"
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowConfirm(false)}
-                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                className="flex-1 px-3 sm:px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 text-sm sm:text-base"
               >
                 No
               </button>
@@ -237,11 +237,11 @@ export default function Booking() {
       {/* Thank You Trainer Modal */}
       {isThankYouTrainer && bookedTrainer && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
-            <h2 className="text-xl md:text-2xl font-semibold text-green-700 mb-4">
+          <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-green-700 mb-4">
               Thank You!
             </h2>
-            <p className="text-gray-700 text-sm md:text-base">
+            <p className="text-gray-700 text-xs sm:text-sm md:text-base">
               Your booking for{" "}
               <span className="text-red-400">{bookedTrainer.name}</span> at{" "}
               <span className="text-red-400">{bookedTrainer.time}</span> is
@@ -249,7 +249,7 @@ export default function Booking() {
             </p>
             <button
               onClick={() => setIsThankYouTrainer(false)}
-              className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-5 w-full"
+              className="px-3 sm:px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-4 sm:mt-5 w-full text-sm sm:text-base"
             >
               Close
             </button>
