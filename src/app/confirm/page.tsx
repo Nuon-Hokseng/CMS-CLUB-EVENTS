@@ -1,41 +1,49 @@
-import { createClient } from "../../supabase/server";
-import type { NextApiRequest, NextApiResponse } from "next";
+"use client";
 
-export async function ConfirmEmailPage(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") return res.status(405).end();
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
-  const supabase = await createClient();
-  const { token, email, firstName, lastName } = req.body;
+export default function ConfirmEmailPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [message, setMessage] = useState("Verifying your email...");
 
-  const { data: userData, error: verifyError } = await supabase.auth.verifyOtp({
-    token,
-    email,
-    type: "signup",
-  });
+  useEffect(() => {
+    const token = searchParams.get("access_token");
+    const email = searchParams.get("email");
+    const firstName = searchParams.get("firstName") || "User";
+    const lastName = searchParams.get("lastName") || "";
 
-  if (verifyError || !userData.user) {
-    return res.status(400).json({
-      success: false,
-      message: verifyError?.message || "Invalid token",
-    });
-  }
+    if (!token || !email) {
+      setMessage("Invalid verification link.");
+      return;
+    }
 
-  const userId = userData.user.id;
+    async function verify() {
+      try {
+        const res = await fetch("/api/confirm-email", {
+          method: "POST",
+          body: JSON.stringify({ token, email, firstName, lastName }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        if (data.success) {
+          setMessage("Email verified! Redirecting...");
+          setTimeout(() => router.push("/"), 3000);
+        } else {
+          setMessage("Verification failed: " + data.message);
+        }
+      } catch {
+        setMessage("Verification error");
+      }
+    }
 
-  const { error: insertError } = await supabase.from("profiles").insert({
-    id: userId,
-    first_name: firstName,
-    last_name: lastName,
-  });
+    verify();
+  }, [searchParams, router]);
 
-  if (insertError) {
-    return res
-      .status(500)
-      .json({ success: false, message: insertError.message });
-  }
-
-  return res.status(200).json({ success: true });
+  return (
+    <div className="min-h-screen flex justify-center items-center">
+      <p>{message}</p>
+    </div>
+  );
 }
