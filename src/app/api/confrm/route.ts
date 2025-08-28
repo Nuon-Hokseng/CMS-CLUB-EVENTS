@@ -1,5 +1,5 @@
 // pages/api/confirm-signup.ts
-import { createClient } from "../../supabase/server";
+import { createClient } from "@/supabase/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
