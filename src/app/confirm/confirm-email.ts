@@ -1,3 +1,4 @@
+"use client";
 import { createClient } from "../../supabase/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 
