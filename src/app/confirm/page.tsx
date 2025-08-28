@@ -1,54 +1,41 @@
-"use client";
+import { createClient } from "../../supabase/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== "POST") return res.status(405).end();
 
-export default function ConfirmEmailPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [message, setMessage] = useState("Verifying your email...");
+  const supabase = await createClient();
+  const { token, email, firstName, lastName } = req.body;
 
-  useEffect(() => {
-    const token = searchParams.get("access_token");
-    const type = searchParams.get("type");
-    const firstName = searchParams.get("firstName") || "User";
-    const lastName = searchParams.get("lastName") || "";
+  const { data: userData, error: verifyError } = await supabase.auth.verifyOtp({
+    token,
+    email,
+    type: "signup",
+  });
 
-    if (!token || type !== "signup") {
-      setMessage("Invalid verification link.");
-      return;
-    }
+  if (verifyError || !userData.user) {
+    return res.status(400).json({
+      success: false,
+      message: verifyError?.message || "Invalid token",
+    });
+  }
 
-    async function verify() {
-      try {
-        const res = await fetch("/api/confirm-email", {
-          method: "POST",
-          body: JSON.stringify({ token, firstName, lastName }),
-          headers: { "Content-Type": "application/json" },
-        });
+  const userId = userData.user.id;
 
-        const data = await res.json();
-        if (data.success) {
-          setMessage("Email verified! Redirecting to home...");
-          setTimeout(() => router.push("/"), 3000);
-        } else {
-          setMessage("Verification failed: " + data.message);
-        }
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setMessage("Verification error: " + err.message);
-        } else {
-          setMessage("Verification error: An unknown error occurred.");
-        }
-      }
-    }
+  const { error: insertError } = await supabase.from("profiles").insert({
+    id: userId,
+    first_name: firstName,
+    last_name: lastName,
+  });
 
-    verify();
-  }, [searchParams, router]);
+  if (insertError) {
+    return res
+      .status(500)
+      .json({ success: false, message: insertError.message });
+  }
 
-  return (
-    <div className="min-h-screen flex justify-center items-center">
-      <p>{message}</p>
-    </div>
-  );
+  return res.status(200).json({ success: true });
 }

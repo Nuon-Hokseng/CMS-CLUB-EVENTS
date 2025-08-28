@@ -1,4 +1,4 @@
-"use client";
+// pages/api/confirm-signup.ts
 import { createClient } from "../../supabase/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -6,10 +6,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const supabase = await createClient();
-
   if (req.method !== "POST") return res.status(405).end();
 
+  const supabase = await createClient();
   const { token, email, firstName, lastName } = req.body;
 
   // 1) Verify token
@@ -36,9 +35,7 @@ export default async function handler(
   });
 
   if (insertError) {
-    return res
-      .status(500)
-      .json({ success: false, message: insertError.message });
+    return res.status(500).json({ success: false, message: insertError.message });
   }
 
   return res.status(200).json({ success: true });
