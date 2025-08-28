@@ -1,7 +1,10 @@
-import { createClient } from "@/supabase/server";
+import { createClient } from "../../supabase/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const supabase = await createClient();
 
   if (req.method !== "POST") return res.status(405).end();
@@ -16,7 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   if (verifyError || !userData.user) {
-    return res.status(400).json({ success: false, message: verifyError?.message || "Invalid token" });
+    return res.status(400).json({
+      success: false,
+      message: verifyError?.message || "Invalid token",
+    });
   }
 
   const userId = userData.user.id;
@@ -29,7 +35,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   if (insertError) {
-    return res.status(500).json({ success: false, message: insertError.message });
+    return res
+      .status(500)
+      .json({ success: false, message: insertError.message });
   }
 
   return res.status(200).json({ success: true });

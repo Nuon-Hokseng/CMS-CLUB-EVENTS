@@ -3,8 +3,25 @@ import Image from "next/image";
 import Logo from "../ui/main-logo";
 import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
+import { signin } from "./signinServer";
+import { useState } from "react";
 export default function UserLogin() {
+  const [message, setMessage] = useState("");
   const router = useRouter();
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const result = await signin(formData);
+
+    if (result.success) {
+      setMessage("Login successful! Redirecting...");
+      setTimeout(() => {
+        router.push("/"); 
+      }, 3000); 
+    } else {
+      setMessage(`Error: ${result.message}`);
+    }
+  }
   return (
     <section className="w-screen min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
@@ -40,7 +57,10 @@ export default function UserLogin() {
 
           {/* Form */}
           <div className="px-4 md:px-6 lg:px-10 pb-6 lg:pb-10">
-            <form className="flex flex-col gap-4 md:gap-5 mb-6">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-4 md:gap-5 mb-6"
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -50,6 +70,7 @@ export default function UserLogin() {
                 </label>
                 <input
                   type="email"
+                  name="email"
                   id="email"
                   placeholder="Mail@gmail.com"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 md:py-4 focus:ring-2 focus:ring-green-500 focus:outline-none text-sm md:text-base text-gray-600 transition-all duration-200"
@@ -65,17 +86,20 @@ export default function UserLogin() {
                 </label>
                 <input
                   type="password"
+                  name="password"
                   id="password"
                   placeholder="********"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 md:py-4 focus:ring-2 focus:ring-green-500 focus:outline-none text-sm md:text-base text-gray-600 transition-all duration-200"
                 />
               </div>
+              <Button type="submit" variant="green">
+                Sign in
+              </Button>
+              {message && <p>{message}</p>}
             </form>
 
             {/* Buttons */}
             <div className="text-gray-600 text-sm md:text-base flex flex-col text-center gap-4">
-              <Button variant="green">Sign in</Button>
-
               <p className="text-sm md:text-base">
                 Don&apos;t have one?{" "}
                 <button
