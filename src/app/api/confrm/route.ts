@@ -1,15 +1,9 @@
-// pages/api/confirm-signup.ts
 import { createClient } from "@/utils/supabase/server";
-import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") return res.status(405).end();
-
+export async function POST(req: Request) {
   const supabase = await createClient();
-  const { token, email, firstName, lastName } = req.body;
+  const body = await req.json();
+  const { token, email, firstName, lastName } = body;
 
   // 1) Verify token
   const { data: userData, error: verifyError } = await supabase.auth.verifyOtp({
@@ -19,10 +13,13 @@ export default async function handler(
   });
 
   if (verifyError || !userData.user) {
-    return res.status(400).json({
-      success: false,
-      message: verifyError?.message || "Invalid token",
-    });
+    return new Response(
+      JSON.stringify({
+        success: false,
+        message: verifyError?.message || "Invalid token",
+      }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
   }
 
   const userId = userData.user.id;
@@ -35,10 +32,14 @@ export default async function handler(
   });
 
   if (insertError) {
-    return res
-      .status(500)
-      .json({ success: false, message: insertError.message });
+    return new Response(
+      JSON.stringify({ success: false, message: insertError.message }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 
-  return res.status(200).json({ success: true });
+  return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
 }
