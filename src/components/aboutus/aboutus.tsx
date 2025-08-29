@@ -24,7 +24,7 @@ export default function AboutPage() {
           <Image
             width={2000}
             height={1000}
-            src="/aboutus.jpg"
+            src="/logo.png"
             alt="logo"
             className="rounded-2xl shadow-lg object-cover"
           />
