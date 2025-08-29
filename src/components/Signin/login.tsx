@@ -5,6 +5,7 @@ import Button from "../ui/main-button";
 import { useRouter } from "next/navigation";
 import { signinServer } from "../../app/api/signin/signinServer";
 import { useState } from "react";
+import { signInWithGoogle } from "@/app/api/signin/google";
 export default function UserLogin() {
   const [message, setMessage] = useState("");
   const router = useRouter();
@@ -113,6 +114,7 @@ export default function UserLogin() {
               {/* Social Login Buttons */}
               <div className="space-y-3 mt-4">
                 <Button
+                  onClick={signInWithGoogle}
                   variant="white"
                   className="w-full h-12 md:h-14 flex items-center justify-center gap-3 rounded-xl bg-white text-gray-600 hover:bg-green-700 hover:text-white border-2 border-gray-300 transition-all duration-300 text-sm md:text-base"
                 >
@@ -124,20 +126,6 @@ export default function UserLogin() {
                     className="w-5 h-5 md:w-6 md:h-6"
                   />
                   Continue with Google
-                </Button>
-
-                <Button
-                  variant="white"
-                  className="w-full h-12 md:h-14 flex items-center justify-center gap-3 rounded-xl bg-white text-gray-600 hover:bg-green-700 hover:text-white border-2 border-gray-300 transition-all duration-300 text-sm md:text-base"
-                >
-                  <Image
-                    src="/facebook.png"
-                    alt="Facebook"
-                    width={20}
-                    height={20}
-                    className="w-5 h-5 md:w-6 md:h-6"
-                  />
-                  Continue with Facebook
                 </Button>
               </div>
             </div>
