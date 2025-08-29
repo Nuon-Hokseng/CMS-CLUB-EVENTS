@@ -1,18 +1,19 @@
 "use client";
+
 import Link from "next/link";
 import React from "react";
 import Logo from "../ui/main-logo";
 import { Calendar } from "../ui/calendar";
 import { Clock } from "lucide-react";
 import Button from "../ui/main-button";
+import { createBooking } from "@/app/api/booking/bookServer";
 
 export default function Booking() {
-  const [date, setDate] = React.useState<Date | undefined>(undefined);
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = React.useState(false);
+  const [isTrainerModalOpen, setIsTrainerModalOpen] = React.useState(false);
   const [isThankYou, setIsThankYou] = React.useState(false);
-  const [isThankYouTrainer, setIsThankYouTrainer] = React.useState(false);
-  const [showConfirm, setShowConfirm] = React.useState(false);
   const [trainerToBook, setTrainerToBook] = React.useState<{
     name: string;
     time: string;
@@ -22,14 +23,46 @@ export default function Booking() {
     time: string;
   } | null>(null);
 
-  React.useEffect(() => {
-    setDate(new Date());
-  }, []);
-
-  const handleBookNow = () => {
+  const handleCalendarBooking = async () => {
     if (!date || !selectedTime) return;
-    console.log("Booking confirmed:", date.toDateString(), selectedTime);
-    setIsThankYou(true);
+
+    try {
+      await createBooking({
+        trainerName: null, // No trainer for calendar bookings
+        time: selectedTime,
+        date: date.toISOString(),
+      });
+
+      setBookedTrainer(null); // Clear booked trainer state
+      setIsThankYou(true);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("An unknown error occurred.");
+      }
+    }
+  };
+
+  const handleTrainerBooking = async () => {
+    if (!date || !selectedTime || !trainerToBook) return;
+
+    try {
+      await createBooking({
+        trainerName: trainerToBook.name,
+        time: selectedTime,
+        date: date.toISOString(),
+      });
+
+      setBookedTrainer(trainerToBook); // Set booked trainer for thank you message
+      setIsThankYou(true);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("An unknown error occurred.");
+      }
+    }
   };
 
   const sessions = [
@@ -46,15 +79,18 @@ export default function Booking() {
     "3:00 PM - 5:00 PM",
   ];
 
-  const handleSelectTime = (time: string) => {
-    setSelectedTime(time);
-    console.log("Selected time: ", time);
+  const handleSelectDate = (newDate: Date | undefined) => {
+    setDate(newDate);
+    if (newDate) {
+      setSelectedTime(null);
+      setIsCalendarModalOpen(true);
+    }
   };
 
-  const handleSelect = (newDate: Date | undefined) => {
-    setDate(newDate);
-    console.log("Selected date: ", newDate);
-    if (newDate) setIsOpen(true);
+  const handleTrainerBook = (session: { name: string; time: string }) => {
+    setTrainerToBook(session);
+    setSelectedTime(session.time); // Pre-select time for trainer event
+    setIsTrainerModalOpen(true);
   };
 
   return (
@@ -80,7 +116,7 @@ export default function Booking() {
             showOutsideDays
             mode="single"
             selected={date}
-            onSelect={handleSelect}
+            onSelect={handleSelectDate}
             className="rounded-lg border w-[95%] sm:w-[90%] md:max-w-md lg:max-w-lg text-green-600"
           />
         </div>
@@ -106,13 +142,7 @@ export default function Booking() {
                 <Button
                   variant="green"
                   className="text-xs sm:text-sm md:text-base mt-2 sm:mt-3"
-                  onClick={() => {
-                    setTrainerToBook({
-                      name: session.name,
-                      time: session.time,
-                    });
-                    setShowConfirm(true);
-                  }}
+                  onClick={() => handleTrainerBook(session)}
                 >
                   Book
                 </Button>
@@ -127,18 +157,17 @@ export default function Booking() {
         </section>
       </section>
 
-      {/* Date & Time Modal */}
-      {isOpen && (
+      {/* Calendar Booking Modal */}
+      {isCalendarModalOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-xl flex flex-col p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-lg max-h-[90vh] overflow-y-auto text-center items-center border-4 border-green-300">
             <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-green-700 mb-4">
-              Confirm Date
+              Confirm General Booking
             </h2>
             <p className="text-gray-700 mb-6 text-sm sm:text-base">
               <span className="text-green-600">Selected Date:</span>{" "}
               <span className="font-bold">{date?.toDateString()}</span>
             </p>
-
             <div className="w-full grid grid-cols-1 gap-2 sm:gap-3 mb-6">
               {timeSlots.map((time) => (
                 <Button
@@ -147,25 +176,25 @@ export default function Booking() {
                   className={`bg-green-600 text-white rounded-2xl transition-all duration-300 w-full h-10 sm:h-12 ${
                     selectedTime === time ? "bg-green-800" : ""
                   }`}
-                  onClick={() => handleSelectTime(time)}
+                  onClick={() => setSelectedTime(time)}
                 >
                   {time}
                 </Button>
               ))}
             </div>
-
             <button
               onClick={() => {
-                setIsOpen(false);
-                handleBookNow();
+                setIsCalendarModalOpen(false);
+                handleCalendarBooking();
               }}
               className="px-3 sm:px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 w-full text-sm sm:text-base"
+              disabled={!selectedTime}
             >
               Book Now
             </button>
             <button
               onClick={() => {
-                setIsOpen(false);
+                setIsCalendarModalOpen(false);
               }}
               className="px-3 sm:px-4 py-2 rounded-lg bg-gray-300 text-gray-700 hover:bg-gray-400 mt-3 sm:mt-4 w-full text-sm sm:text-base"
             >
@@ -175,7 +204,41 @@ export default function Booking() {
         </div>
       )}
 
-      {/* Thank You Modal */}
+      {/* Trainer Booking Modal */}
+      {isTrainerModalOpen && trainerToBook && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-green-700 mb-4">
+              Confirm Booking with {trainerToBook.name}
+            </h2>
+            <p className="text-gray-700 mb-6 text-xs sm:text-sm md:text-base">
+              You are about to book a session with{" "}
+              <span className="text-red-400">{trainerToBook.name}</span> on{" "}
+              <span className="text-red-400">{date?.toDateString()}</span> at{" "}
+              <span className="text-red-400">{trainerToBook.time}</span>.
+            </p>
+            <div className="flex gap-3 sm:gap-4 w-full">
+              <button
+                onClick={() => {
+                  setIsTrainerModalOpen(false);
+                  handleTrainerBooking();
+                }}
+                className="flex-1 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm sm:text-base"
+              >
+                Confirm
+              </button>
+              <button
+                onClick={() => setIsTrainerModalOpen(false)}
+                className="flex-1 px-3 sm:px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 text-sm sm:text-base"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Unified Thank You Modal */}
       {isThankYou && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
@@ -183,72 +246,12 @@ export default function Booking() {
               Thank You!
             </h2>
             <p className="text-gray-700 text-xs sm:text-sm md:text-base">
-              Your booking for{" "}
-              <span className="text-red-400">{date?.toDateString()}</span> at{" "}
-              <span className="text-red-400">{selectedTime}</span> is confirmed.
+              {bookedTrainer
+                ? `Your booking with ${bookedTrainer.name} at ${bookedTrainer.time} is confirmed.`
+                : `Your general booking for ${date?.toDateString()} at ${selectedTime} is confirmed.`}
             </p>
             <button
               onClick={() => setIsThankYou(false)}
-              className="px-3 sm:px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-4 sm:mt-5 w-full text-sm sm:text-base"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Confirm Trainer Modal */}
-      {showConfirm && trainerToBook && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
-            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-green-700 mb-4">
-              Are you sure?
-            </h2>
-            <p className="text-gray-700 mb-6 text-xs sm:text-sm md:text-base">
-              You are about to book{" "}
-              <span className="text-red-400">{trainerToBook.name}</span> at{" "}
-              <span className="text-red-400">{trainerToBook.time}</span>.
-            </p>
-            <div className="flex gap-3 sm:gap-4 w-full">
-              <button
-                onClick={() => {
-                  setBookedTrainer(trainerToBook);
-                  setIsThankYouTrainer(true);
-                  setShowConfirm(false);
-                  console.log(
-                    `Booked trainer ${trainerToBook.name} at ${trainerToBook.time}`
-                  );
-                }}
-                className="flex-1 px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm sm:text-base"
-              >
-                Yes
-              </button>
-              <button
-                onClick={() => setShowConfirm(false)}
-                className="flex-1 px-3 sm:px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 text-sm sm:text-base"
-              >
-                No
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Thank You Trainer Modal */}
-      {isThankYouTrainer && bookedTrainer && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-[95%] sm:w-[90%] max-w-md h-auto flex flex-col items-center justify-center text-center">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-green-700 mb-4">
-              Thank You!
-            </h2>
-            <p className="text-gray-700 text-xs sm:text-sm md:text-base">
-              Your booking for{" "}
-              <span className="text-red-400">{bookedTrainer.name}</span> at{" "}
-              <span className="text-red-400">{bookedTrainer.time}</span> is
-              confirmed.
-            </p>
-            <button
-              onClick={() => setIsThankYouTrainer(false)}
               className="px-3 sm:px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 mt-4 sm:mt-5 w-full text-sm sm:text-base"
             >
               Close

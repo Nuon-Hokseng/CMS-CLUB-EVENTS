@@ -9,6 +9,7 @@ export async function POST(req: Request) {
     token,
     email,
     type: "signup",
+    
   });
 
   if (verifyError || !userData.user) {
