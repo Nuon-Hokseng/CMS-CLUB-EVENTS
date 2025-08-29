@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   const supabase = await createClient();
   const body = await req.json();
   const { token, email, firstName, lastName } = body;
-  // 1) Verify token
+
   const { data: userData, error: verifyError } = await supabase.auth.verifyOtp({
     token,
     email,
@@ -23,7 +23,6 @@ export async function POST(req: Request) {
 
   const userId = userData.user.id;
 
-  // 2) Insert profile now that user is verified
   const { error: insertError } = await supabase.from("profiles").insert({
     id: userId,
     first_name: firstName,

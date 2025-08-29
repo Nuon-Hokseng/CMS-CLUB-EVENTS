@@ -15,7 +15,6 @@ export async function signinServer(formData: FormData) {
 
   if (error) return { success: false, message: error.message };
 
-  // Check if email is verified
   if (data.user && !data.user.email_confirmed_at) {
     return {
       success: false,
