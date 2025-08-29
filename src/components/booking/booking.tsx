@@ -7,7 +7,7 @@ import { Calendar } from "../ui/calendar";
 import { Clock } from "lucide-react";
 import Button from "../ui/main-button";
 import { createBooking } from "@/app/api/booking/bookServer";
-
+import router from "next/router";
 export default function Booking() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
@@ -26,20 +26,21 @@ export default function Booking() {
   const handleCalendarBooking = async () => {
     if (!date || !selectedTime) return;
 
-    try {
-      await createBooking({
-        trainerName: null, // No trainer for calendar bookings
-        time: selectedTime,
-        date: date.toISOString(),
-      });
+    const result = await createBooking({
+      trainerName: null,
+      time: selectedTime,
+      date: date.toISOString(),
+    });
 
-      setBookedTrainer(null); // Clear booked trainer state
+    if (result.success) {
+      setBookedTrainer(null);
       setIsThankYou(true);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert(err.message);
+    } else {
+      // If the booking fails because of authentication, redirect
+      if (result.error === "You must be logged in or signed up to book.") {
+        router.push("/login"); // Redirect to your login page
       } else {
-        alert("An unknown error occurred.");
+        alert(result.error);
       }
     }
   };
@@ -47,20 +48,21 @@ export default function Booking() {
   const handleTrainerBooking = async () => {
     if (!date || !selectedTime || !trainerToBook) return;
 
-    try {
-      await createBooking({
-        trainerName: trainerToBook.name,
-        time: selectedTime,
-        date: date.toISOString(),
-      });
+    const result = await createBooking({
+      trainerName: trainerToBook.name,
+      time: selectedTime,
+      date: date.toISOString(),
+    });
 
-      setBookedTrainer(trainerToBook); // Set booked trainer for thank you message
+    if (result.success) {
+      setBookedTrainer(trainerToBook);
       setIsThankYou(true);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert(err.message);
+    } else {
+      // If the booking fails because of authentication, redirect
+      if (result.error === "You must be logged in or signed up to book.") {
+        router.push("/login"); // Redirect to your login page
       } else {
-        alert("An unknown error occurred.");
+        alert(result.error);
       }
     }
   };

@@ -19,7 +19,10 @@ export async function createBooking({ trainerName, time, date }: BookingData) {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    throw new Error("You must be logged in to book.");
+    return {
+      success: false,
+      error: "You must be logged in or signed up to book.",
+    };
   }
 
   const { data, error } = await supabase.from("bookings").insert({
